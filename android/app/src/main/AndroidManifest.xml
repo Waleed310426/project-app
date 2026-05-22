@@ -1,0 +1,82 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- =================== 1. الأذونات (تبقى كما هي مع تحسين بسيط ) =================== -->
+    <!-- هذا الإذن قوي جدًا وقد ترفضه Google Play. من الأفضل استخدام الأذونات المحددة. -->
+    <!-- <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" /> -->
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES"/>
+    <uses-permission android:name="android.permission.READ_MEDIA_VIDEO"/>
+    
+    <!-- صلاحية الوصول للملفات على أندرويد 9 والإصدارات الأقدم -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <!-- تقييد صلاحية الكتابة للإصدارات القديمة فقط لتجنب مشاكل Google Play -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" android:maxSdkVersion="28" />
+    
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <!-- =================== 2. وسم التطبيق (هنا التصحيح الأول) =================== -->
+    <!-- تم نقل "requestLegacyExternalStorage" إلى مكانه الصحيح كخاصية -->
+    <application
+        android:label="task_ly"
+        android:name="${applicationName}"
+        android:icon="@mipmap/ic_launcher"
+        android:requestLegacyExternalStorage="true">
+
+        <!-- =================== 3. النشاط الرئيسي (هنا التصحيح الثاني) =================== -->
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:launchMode="singleTop"
+            android:theme="@style/LaunchTheme"
+            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
+            android:hardwareAccelerated="true"
+            android:windowSoftInputMode="adjustResize">
+            
+            <meta-data
+              android:name="io.flutter.embedding.android.NormalTheme"
+              android:resource="@style/NormalTheme"
+              />
+
+            <!-- ✅✅✅ [إضافة مهمة جدًا] فلتر نقطة البداية الرئيسية (LAUNCHER) ✅✅✅ -->
+            <!-- هذا هو الجزء الذي كان مفقودًا ويسبب الخطأ -->
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+
+            <!-- فلتر الرابط الذي كان موجودًا لديك (يبقى كما هو في مكانه الصحيح) -->
+            <!-- <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data
+                    android:host="taskly2-9707d.firebaseapp.com"
+                    android:scheme="https"/>
+            </intent-filter> -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data
+                    android:host="taskly2.page.link"
+                    android:scheme="httpshttps"/>
+                <data
+                    android:host="taskly2.page.link"
+                    android:scheme="http"/>
+            </intent-filter>
+        </activity>
+
+        <!-- لا تحذف هذا السطر، فهو مهم لـ Flutter -->
+        <meta-data
+            android:name="flutterEmbedding"
+            android:value="2" />
+            
+    </application>
+
+    <!-- وسم queries (يبقى كما هو ) -->
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.PROCESS_TEXT"/>
+            <data android:mimeType="text/plain"/>
+        </intent>
+    </queries>
+</manifest>
